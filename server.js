@@ -3,7 +3,7 @@ var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
 
 // MySQL port.
-var PORT = process.env.PORT || 8080;
+var PORT = 3000;
 
 var app = express();
 
@@ -18,7 +18,7 @@ app.use(methodOverride("_method"));
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
-app.engine("hbs", exphbs({ defaultLayout: "main" }));
+app.engine("hbs", exphbs({ defaultLayout: "main", extname: 'hbs'}));
 app.set("view engine", "hbs");
 
 // Import routes and give the server access to them.
