@@ -1,0 +1,58 @@
+body {
+	background-color: #822d2d;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+	font-size: 60px;
+	font-family: monospace;	
+}
+
+h2 {
+	font-size: 25px;
+}
+
+.container {
+	max-width: 1024px;
+	margin: 0 auto;
+}
+
+#not-eaten {
+	float: left;
+}
+
+#burger-pic {
+	float: left;
+	width: 220px;
+	height: 220px;
+	margin: 100px 50px 50px 0px;
+}
+
+#eaten {
+	float: right;
+}
+
+li {
+	font-size: 20px;
+}
+
+#burger-input {
+	font-size: 18px;
+}
+
+button {
+	height: 25px;
+	width: 100px;
+	margin: 8px 0px;
+	background: #336fce;
+	font-size: 14px;
+}
+
+#add-a-burger-area {
+	clear: both;
+}
+
