@@ -2,23 +2,78 @@ var connection = require('../config/connection.js');
 
 // Inside the "orm.js" file, create the code that will execute MySQL commands.
 
-// Methods for SQL: selectAll(), insertOne(), updateOne().
+//  Helper function for SQL syntax.
+function printQuestionMarks(num) {
+  var arr = [];
+
+  for(var i = 0; i < num; i++) {
+    arr.push("?");
+  }
+
+  return arr.toString();
+}
+
+// Helper function for SQL syntax.
+function objToSql(ob) {
+  var arr = [];
+
+  for(var key in ob) {
+    if (Object.hasOwnProperty.call(ob, key)) {
+      arr.push(key + "=" + ob[key]);
+    }
+  }
+
+  return arr.toString();
+}
+
+// Methods for SQL: selectAll(), insertOne(), updateOne(). **Straight from catsapp.
 var orm = {
-  selectAll: function(some_tbl, cb){
-    connection.query('SELECT *  FROM ' + some_tbl + ';', function(err, result){
-      cb(result);
-    });
-  },  
-  insertOne: function(some_tbl, some_col, some_val, cb){
-    connection.query('INSERT INTO ' + some_tbl + ' ( ' + some_col + ' ) ' + ' VALUES (?)', [some_val], function(err, result){
-      cb(result);
-    });
-  },
-  updateOne: function(some_tbl, some_set_col, some_set_val, some_col_param, some_val_param, cb){
-    connection.query('UPDATE ' + some_tbl + ' SET ' + some_set_col + ' = ? WHERE ' + some_col_param + ' = ?', [some_set_val, some_val_param], function(err, result){
+  selectAll: function(tableInput, cb) {
+    var queryString = "SELECT * FROM " + tableInput + ";";
+    connection.query(queryString, function(err, result) {
+      if (err) {
+        throw err;
+      }
       cb(result);
     });
   },
-}//end of object
+
+  insertOne: function(table, cols, vals, cb) {
+    var queryString = "INSERT INTO " + table;
+
+    queryString += " (";
+    queryString += cols.toString();
+    queryString += ") ";
+    queryString += "VALUES (";
+    queryString += printQuestionMarks(vals.length);
+    queryString += ") ";
+
+    console.log(queryString);
+
+    connection.query(queryString, vals, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
+    });
+  },
+
+  updateOne: function(table, objColVals, condition, cb) {
+    var queryString = "UPDATE " + table;
+
+    queryString += " SET ";
+    queryString += objToSql(objColVals);
+    queryString += " WHERE ";
+    queryString += condition;
+
+    console.log(queryString);
+    connection.query(queryString, function(err, results) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
+    });
+  }
+};// End of orm object.
 
 module.exports = orm;
